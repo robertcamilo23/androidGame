@@ -1,39 +1,51 @@
 package com.oreilly.demo.android.pa.uidemo.model;
 
 import android.os.Handler;
+
 import com.oreilly.demo.android.pa.uidemo.view.DotView;
 
 /**
  * Created by Hamdan on 4/18/14.
  */
-public class DotGenerator implements Runnable {
+public class DotGenerator implements Runnable
+{
     final Dots dots;
     final DotView view;
     final int color;
 
     private final Handler hdlr = new Handler();
-    private final Runnable makeDots = new Runnable() {
+    private final Runnable makeDots = new Runnable()
+    {
 
-    @Override
-    public void run() { dots.addDot1(); }
+        @Override
+        public void run() { dots.addDot1(); }
     };
 
 
+    private volatile boolean done;
 
-   private volatile boolean done;
-   public DotGenerator(Dots dots,DotView view, int color) {
-     this.dots = dots;
-     this.view= view;
-     this.color = color;
- }
-   public void done() { done = true;}
+    public DotGenerator( Dots dots, DotView view, int color )
+    {
+        this.dots = dots;
+        this.view = view;
+        this.color = color;
+    }
+
+    public void done() { done = true;}
 
     @Override
-   public void run(){
-        while (!done){
-            hdlr.post(makeDots);
-            try { Thread.sleep(1000); }
-            catch (InterruptedException e) { }
+    public void run()
+    {
+        while ( !done )
+        {
+            hdlr.post( makeDots );
+            try
+            {
+                Thread.sleep( 1000 );
+            }
+            catch ( InterruptedException e )
+            {
+            }
         }
     }
 
