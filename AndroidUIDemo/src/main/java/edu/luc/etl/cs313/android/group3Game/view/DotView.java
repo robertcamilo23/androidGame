@@ -1,4 +1,4 @@
-package com.oreilly.demo.android.pa.uidemo.view;
+package edu.luc.etl.cs313.android.group3Game.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -8,8 +8,8 @@ import android.graphics.Paint.Style;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.oreilly.demo.android.pa.uidemo.model.Dot;
-import com.oreilly.demo.android.pa.uidemo.model.Dots;
+import edu.luc.etl.cs313.android.group3Game.model.Dot;
+import edu.luc.etl.cs313.android.group3Game.model.Dots;
 
 
 /**

@@ -1,4 +1,4 @@
-package com.oreilly.demo.android.pa.uidemo.model;
+package edu.luc.etl.cs313.android.group3Game.model;
 
 import java.util.Random;
 

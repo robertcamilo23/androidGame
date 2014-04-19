@@ -1,8 +1,8 @@
-package com.oreilly.demo.android.pa.uidemo.model;
+package edu.luc.etl.cs313.android.group3Game.model;
 
 import android.os.Handler;
 
-import com.oreilly.demo.android.pa.uidemo.view.DotView;
+import edu.luc.etl.cs313.android.group3Game.view.DotView;
 
 /**
  * Created by Hamdan on 4/18/14.

@@ -1,4 +1,4 @@
-package com.oreilly.demo.android.pa.uidemo;
+package edu.luc.etl.cs313.android.group3Game;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -16,9 +16,9 @@ import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.oreilly.demo.android.pa.uidemo.model.Dot;
-import com.oreilly.demo.android.pa.uidemo.model.Dots;
-import com.oreilly.demo.android.pa.uidemo.view.DotView;
+import edu.luc.etl.cs313.android.group3Game.model.Dot;
+import edu.luc.etl.cs313.android.group3Game.model.Dots;
+import edu.luc.etl.cs313.android.group3Game.view.DotView;
 
 import java.util.ArrayList;
 import java.util.List;
