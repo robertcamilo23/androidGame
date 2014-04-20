@@ -2,10 +2,12 @@ package edu.luc.etl.cs313.android.group3Game;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,13 +34,15 @@ public class TouchMe extends Activity
 {
     /**
      * Dot diameter
+     * http://mobiforge.com/design-development/designing-touch-thumb-and-finger-sized-design
      */
-    public static final int DOT_DIAMETER = 6;
+    public static final int DOT_DIAMETER = 44;
     /**
      * The application model
      */
     final Dots dotModel = new Dots();
     private final Random rand = new Random();
+    private int width, height;
     /**
      * The application view
      */
@@ -58,6 +62,13 @@ public class TouchMe extends Activity
 
         // install the view
         setContentView( R.layout.main );
+
+        // obtain screen dimensions
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        width = size.x;
+        height = size.y;
 
         // find the dots view
         dotView = ( DotView ) findViewById( R.id.dots );
