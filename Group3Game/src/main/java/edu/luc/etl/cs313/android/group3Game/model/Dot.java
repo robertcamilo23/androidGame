@@ -7,7 +7,7 @@ package edu.luc.etl.cs313.android.group3Game.model;
 public final class Dot
 {
     private final float x, y;
-    private final int color;
+    private final int color, xM, yM;
     private final int radius;
 
     /**
@@ -16,10 +16,12 @@ public final class Dot
      * @param color    the color.
      * @param radius dot radius.
      */
-    public Dot( float x, float y, int color, int radius )
+    public Dot( float x, float y, int color, int radius, int xM, int yM )
     {
         this.x = x;
+        this.xM = xM;
         this.y = y;
+        this.yM = yM;
         this.color = color;
         this.radius = radius;
     }
@@ -47,4 +49,14 @@ public final class Dot
      */
     public int getRadius()
     { return radius; }
+
+    public int getxM()
+    {
+        return xM;
+    }
+
+    public int getyM()
+    {
+        return yM;
+    }
 }

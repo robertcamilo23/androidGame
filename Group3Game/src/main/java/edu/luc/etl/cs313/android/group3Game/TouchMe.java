@@ -65,6 +65,7 @@ public class TouchMe extends Activity
 
         // find the dots view
         dotView = ( DotView ) findViewById( R.id.dots );
+
         dotView.setDots( dotModel );
 
         dotView.setOnCreateContextMenuListener( this );
@@ -218,7 +219,10 @@ public class TouchMe extends Activity
     {
         int randomX = rand.nextInt( ( view.getWidth() / ( DOT_DIAMETER ) ) );
         int randomY = rand.nextInt( ( view.getHeight() / ( DOT_DIAMETER ) ) );
-        dots.addDot( ( randomX * DOT_DIAMETER ) + DOT_RADIUS, ( randomY * DOT_DIAMETER ) + DOT_RADIUS, color, DOT_RADIUS );
+        color = ( rand.nextBoolean() ) ? Color.GREEN : Color.YELLOW;
+        Dot dot = new Dot( ( randomX * DOT_DIAMETER ) + DOT_RADIUS, ( randomY * DOT_DIAMETER ) + DOT_RADIUS, color, DOT_RADIUS, randomX, randomY );
+        dots.addDot( dot, randomX, randomY, ( view.getWidth() / ( DOT_DIAMETER ) ), ( view.getHeight() / ( DOT_DIAMETER ) ) );
+        dots.moveToNeighbors();
     }
 
     /**
@@ -278,7 +282,7 @@ public class TouchMe extends Activity
 
         private void addDot( Dots dots, float x, float y, float p, float s )
         {
-            if ( dots.intersects( new Dot( x, y, Color.CYAN, ( int ) ( ( p + 0.5 ) * ( s + 0.5 ) * DOT_RADIUS ) ) ) )
+            if ( dots.intersects( new Dot( x, y, Color.CYAN, ( int ) ( ( p + 0.5 ) * ( s + 0.5 ) * DOT_RADIUS ), 0, 0 ) ) )
             {
                 dotView.invalidate();
             }
