@@ -73,6 +73,20 @@ public class Dots
         }
     }
 
+    public boolean intersects( Dot userTouch )
+    {
+        for ( Dot dot : dots )
+        {
+            if ( dot.getX() - ( dot.getRadius() ) <= userTouch.getX() && userTouch.getX() <= dot.getX() + ( dot.getRadius() ) &&
+                 dot.getY() - ( dot.getRadius() ) <= userTouch.getY() && userTouch.getY() <= dot.getY() + ( dot.getRadius() ) )
+            {
+                dots.remove( dot );
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * DotChangeListener.
      */

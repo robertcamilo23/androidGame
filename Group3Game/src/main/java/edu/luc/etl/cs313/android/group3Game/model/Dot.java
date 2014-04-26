@@ -8,20 +8,20 @@ public final class Dot
 {
     private final float x, y;
     private final int color;
-    private final int diameter;
+    private final int radius;
 
     /**
      * @param x        horizontal coordinate.
      * @param y        vertical coordinate.
      * @param color    the color.
-     * @param diameter dot diameter.
+     * @param radius dot radius.
      */
-    public Dot( float x, float y, int color, int diameter )
+    public Dot( float x, float y, int color, int radius )
     {
         this.x = x;
         this.y = y;
         this.color = color;
-        this.diameter = diameter;
+        this.radius = radius;
     }
 
     /**
@@ -43,8 +43,8 @@ public final class Dot
     { return color; }
 
     /**
-     * @return the dot diameter.
+     * @return the dot radius.
      */
-    public int getDiameter()
-    { return diameter; }
+    public int getRadius()
+    { return radius; }
 }

@@ -78,7 +78,7 @@ public class DotView extends View
         for ( Dot dot : dots.getDots() )
         {
             paint.setColor( dot.getColor() );
-            canvas.drawCircle( dot.getX(), dot.getY(), dot.getDiameter(), paint );
+            canvas.drawCircle( dot.getX(), dot.getY(), dot.getRadius(), paint );
         }
     }
 }

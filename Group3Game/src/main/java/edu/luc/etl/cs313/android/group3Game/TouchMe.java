@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Display;
@@ -46,7 +47,7 @@ public class TouchMe extends Activity
     /**
      * The application view
      */
-    DotView dotView;
+    static DotView dotView;
     /**
      * The dot generator
      */
@@ -66,7 +67,7 @@ public class TouchMe extends Activity
         // obtain screen dimensions
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
-        display.getSize(size);
+        display.getSize( size );
         width = size.x;
         height = size.y;
 
@@ -284,7 +285,10 @@ public class TouchMe extends Activity
 
         private void addDot( Dots dots, float x, float y, float p, float s )
         {
-            dots.addDot( x, y, Color.CYAN, ( int ) ( ( p + 0.5 ) * ( s + 0.5 ) * DOT_DIAMETER ) );
+            if ( dots.intersects( new Dot( x, y, Color.CYAN, ( int ) ( ( p + 0.5 ) * ( s + 0.5 ) * DOT_DIAMETER ) ) ) )
+            {
+                dotView.invalidate();
+            }
         }
     }
 
