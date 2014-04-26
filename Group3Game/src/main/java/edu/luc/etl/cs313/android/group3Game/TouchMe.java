@@ -5,10 +5,8 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,13 +35,14 @@ public class TouchMe extends Activity
      * Dot diameter
      * http://mobiforge.com/design-development/designing-touch-thumb-and-finger-sized-design
      */
-    public static final int DOT_DIAMETER = 44;
+    public static final int DOT_RADIUS = 44;
+    public static final int DOT_DIAMETER = DOT_RADIUS * 2;
+
     /**
      * The application model
      */
     final Dots dotModel = new Dots();
     private final Random rand = new Random();
-    private int width, height;
     /**
      * The application view
      */
@@ -63,13 +62,6 @@ public class TouchMe extends Activity
 
         // install the view
         setContentView( R.layout.main );
-
-        // obtain screen dimensions
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize( size );
-        width = size.x;
-        height = size.y;
 
         // find the dots view
         dotView = ( DotView ) findViewById( R.id.dots );
@@ -224,8 +216,9 @@ public class TouchMe extends Activity
      */
     void makeDot( Dots dots, DotView view, int color )
     {
-        int pad = ( DOT_DIAMETER + 2 ) * 2;
-        dots.addDot( DOT_DIAMETER + ( rand.nextFloat() * ( view.getWidth() - pad ) ), DOT_DIAMETER + ( rand.nextFloat() * ( view.getHeight() - pad ) ), color, DOT_DIAMETER );
+        int randomX = rand.nextInt( ( view.getWidth() / ( DOT_DIAMETER ) ) );
+        int randomY = rand.nextInt( ( view.getHeight() / ( DOT_DIAMETER ) ) );
+        dots.addDot( ( randomX * DOT_DIAMETER ) + DOT_RADIUS, ( randomY * DOT_DIAMETER ) + DOT_RADIUS, color, DOT_RADIUS );
     }
 
     /**
@@ -285,7 +278,7 @@ public class TouchMe extends Activity
 
         private void addDot( Dots dots, float x, float y, float p, float s )
         {
-            if ( dots.intersects( new Dot( x, y, Color.CYAN, ( int ) ( ( p + 0.5 ) * ( s + 0.5 ) * DOT_DIAMETER ) ) ) )
+            if ( dots.intersects( new Dot( x, y, Color.CYAN, ( int ) ( ( p + 0.5 ) * ( s + 0.5 ) * DOT_RADIUS ) ) ) )
             {
                 dotView.invalidate();
             }
@@ -327,7 +320,7 @@ public class TouchMe extends Activity
                 hdlr.post( makeDots );
                 try
                 {
-                    Thread.sleep( 5000 );
+                    Thread.sleep( 1000 );
                 }
                 catch ( InterruptedException e )
                 {
