@@ -2,18 +2,16 @@ package edu.luc.etl.cs313.android.group3Game;
 
 import android.app.Activity;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
-import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -38,11 +36,17 @@ public class TouchMe extends Activity
     public static final int DOT_RADIUS = 44;
     public static final int DOT_DIAMETER = DOT_RADIUS * 2;
 
+    public static int MAX_MONSTERS = 3;
+    public static int MONSTERS = 0;
+    public static int LEVEL = 1;
+
     /**
      * The application model
      */
     final Dots dotModel = new Dots();
     private final Random rand = new Random();
+    private Thread gameThread;
+
     /**
      * The application view
      */
@@ -60,6 +64,7 @@ public class TouchMe extends Activity
     {
         super.onCreate( state );
 
+
         // install the view
         setContentView( R.layout.main );
 
@@ -69,37 +74,7 @@ public class TouchMe extends Activity
         dotView.setDots( dotModel );
 
         dotView.setOnCreateContextMenuListener( this );
-        dotView.setOnTouchListener( new TrackingTouchListener( dotModel ) );
-
-        dotView.setOnKeyListener( new OnKeyListener()
-        {
-            @Override
-            public boolean onKey( View v, int keyCode, KeyEvent event )
-            {
-                if ( KeyEvent.ACTION_DOWN != event.getAction() )
-                {
-                    return false;
-                }
-
-                int color;
-                switch ( keyCode )
-                {
-                    case KeyEvent.KEYCODE_SPACE:
-                        color = Color.MAGENTA;
-                        break;
-                    case KeyEvent.KEYCODE_ENTER:
-                        color = Color.BLUE;
-                        break;
-                    default:
-                        return false;
-                }
-
-                makeDot( dotModel, dotView, color );
-
-                return true;
-            }
-        } );
-
+        dotView.setOnTouchListener( new TrackingTouchListener( dotModel, dotGenerator ) );
 
         dotView.setOnFocusChangeListener( new OnFocusChangeListener()
         {
@@ -108,36 +83,37 @@ public class TouchMe extends Activity
             {
                 if ( !hasFocus && ( null != dotGenerator ) )
                 {
-                    dotGenerator.done();
+                    dotGenerator.monstersDone();
                     dotGenerator = null;
                 }
                 else if ( hasFocus && ( null == dotGenerator ) )
                 {
-                    dotGenerator = new DotGenerator( dotModel, dotView, Color.BLACK );
-                    new Thread( dotGenerator ).start();
+                    dotGenerator = new DotGenerator( dotModel, dotView );
+                    gameThread = new Thread( dotGenerator );
+                    gameThread.start();
                 }
             }
         } );
 
         // wire up the controller
-        ( ( Button ) findViewById( R.id.button1 ) ).setOnClickListener( new Button.OnClickListener()
-                                                                        {
-                                                                            @Override
-                                                                            public void onClick( View v )
-                                                                            {
-                                                                                makeDot( dotModel, dotView, Color.RED );
-                                                                            }
-                                                                        }
-                                                                      );
-        ( ( Button ) findViewById( R.id.button2 ) ).setOnClickListener( new Button.OnClickListener()
-                                                                        {
-                                                                            @Override
-                                                                            public void onClick( View v )
-                                                                            {
-                                                                                makeDot( dotModel, dotView, Color.GREEN );
-                                                                            }
-                                                                        }
-                                                                      );
+        //        ( ( Button ) findViewById( R.id.button1 ) ).setOnClickListener( new Button.OnClickListener()
+        //                                                                        {
+        //                                                                            @Override
+        //                                                                            public void onClick( View v )
+        //                                                                            {
+        //                                                                                makeDot( dotModel, dotView );
+        //                                                                            }
+        //                                                                        }
+        //                                                                      );
+        //        ( ( Button ) findViewById( R.id.button2 ) ).setOnClickListener( new Button.OnClickListener()
+        //                                                                        {
+        //                                                                            @Override
+        //                                                                            public void onClick( View v )
+        //                                                                            {
+        //                                                                                makeDot( dotModel, dotView );
+        //                                                                            }
+        //                                                                        }
+        //                                                                      );
 
         final EditText tb1 = ( EditText ) findViewById( R.id.text1 );
         final EditText tb2 = ( EditText ) findViewById( R.id.text2 );
@@ -149,11 +125,12 @@ public class TouchMe extends Activity
                 Dot d = dots.getLastDot();
                 // This code makes the UI unacceptably unresponsive.
                 // ... investigating - in March, 2014, this was not a problem
-                tb1.setText( ( null == d ) ? "" : String.valueOf( d.getX() ) ); // uncommented
-                tb2.setText( ( null == d ) ? "" : String.valueOf( d.getY() ) ); // uncommented
+                tb1.setText( "LEVEL: " + LEVEL ); // uncommented
+                tb2.setText( "MONSTERS: " + MONSTERS ); // uncommented
                 dotView.invalidate();
             }
         } );
+
     }
 
     /**
@@ -211,18 +188,32 @@ public class TouchMe extends Activity
     }
 
     /**
-     * @param dots  the dots we're drawing
-     * @param view  the view in which we're drawing dots
-     * @param color the color of the dot
+     * @param dots the dots we're drawing
+     * @param view the view in which we're drawing dots
      */
-    void makeDot( Dots dots, DotView view, int color )
+    void makeDot( Dots dots, DotView view )
     {
         int randomX = rand.nextInt( ( view.getWidth() / ( DOT_DIAMETER ) ) );
         int randomY = rand.nextInt( ( view.getHeight() / ( DOT_DIAMETER ) ) );
-        color = ( rand.nextBoolean() ) ? Color.GREEN : Color.YELLOW;
-        Dot dot = new Dot( ( randomX * DOT_DIAMETER ) + DOT_RADIUS, ( randomY * DOT_DIAMETER ) + DOT_RADIUS, color, DOT_RADIUS, randomX, randomY );
+        Dot dot = new Dot( ( randomX * DOT_DIAMETER ) + DOT_RADIUS, ( randomY * DOT_DIAMETER ) + DOT_RADIUS, Color.GREEN, DOT_RADIUS, randomX, randomY );
         dots.addDot( dot, randomX, randomY, ( view.getWidth() / ( DOT_DIAMETER ) ), ( view.getHeight() / ( DOT_DIAMETER ) ) );
+        ++MONSTERS;
+        if ( MONSTERS == MAX_MONSTERS )
+        {
+            dotGenerator.monstersDone();
+        }
+    }
+
+    void moveToNeighbors( Dots dots )
+    {
         dots.moveToNeighbors();
+        if ( dots.getDots().size() == 0 )
+        {
+            MAX_MONSTERS *= 2;
+            ++LEVEL;
+            MONSTERS = 0;
+            dotGenerator.monstersKilled();
+        }
     }
 
     /**
@@ -231,9 +222,14 @@ public class TouchMe extends Activity
     private static final class TrackingTouchListener implements View.OnTouchListener
     {
         private final Dots mDots;
+        private final DotGenerator dotGenerator;
         private List<Integer> tracks = new ArrayList<Integer>();
 
-        TrackingTouchListener( Dots dots ) { mDots = dots; }
+        TrackingTouchListener( Dots dots, DotGenerator dotGenerator )
+        {
+            mDots = dots;
+            this.dotGenerator = dotGenerator;
+        }
 
         @Override
         public boolean onTouch( View v, MotionEvent evt )
@@ -296,40 +292,63 @@ public class TouchMe extends Activity
     {
         final Dots dots;
         final DotView view;
-        final int color;
 
         private final Handler hdlr = new Handler();
         private final Runnable makeDots = new Runnable()
         {
             @Override
-            public void run() { makeDot( dots, view, color ); }
+            public void run() { makeDot( dots, view ); }
+        };
+        private final Runnable moveToNeighbors = new Runnable()
+        {
+            @Override
+            public void run() { moveToNeighbors( dots ); }
         };
 
         private volatile boolean done;
 
-        DotGenerator( Dots dots, DotView view, int color )
+        DotGenerator( Dots dots, DotView view )
         {
             this.dots = dots;
             this.view = view;
-            this.color = color;
         }
 
-        public void done() { done = true; }
+        public void monstersDone() { done = true; }
+
+        public void monstersKilled() { done = false; }
 
         @Override
         public void run()
         {
             while ( !done )
             {
-                hdlr.post( makeDots );
-                try
+                while ( !done )
                 {
-                    Thread.sleep( 1000 );
+                    hdlr.post( makeDots );
+                    try
+                    {
+                        Thread.sleep( 400 );
+                    }
+                    catch ( InterruptedException e )
+                    {
+                    }
                 }
-                catch ( InterruptedException e )
+
+                while ( done )
                 {
+                    hdlr.post( moveToNeighbors );
+                    try
+                    {
+                        Thread.sleep( 1000 );
+                    }
+                    catch ( InterruptedException e )
+                    {
+                    }
                 }
             }
+
+            Log.d( "thread should die here", "" );
+            return;
         }
     }
 }
