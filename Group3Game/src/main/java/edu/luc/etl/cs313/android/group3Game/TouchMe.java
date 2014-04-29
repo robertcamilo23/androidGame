@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -132,6 +131,9 @@ public class TouchMe extends Activity
         {
             case R.id.menu_clear:
                 dotModel.clearDots();
+                MAX_MONSTERS = 3;
+                MONSTERS = 0;
+                LEVEL = 0;
                 return true;
 
             default:
@@ -158,6 +160,9 @@ public class TouchMe extends Activity
         {
             case 1:
                 dotModel.clearDots();
+                MAX_MONSTERS = 3;
+                MONSTERS = 0;
+                LEVEL = 0;
                 return true;
             default:
                 ;
@@ -188,7 +193,7 @@ public class TouchMe extends Activity
         dots.moveToNeighbors();
         if ( dots.getDots().size() == 0 )
         {
-            MAX_MONSTERS *= 2;
+            MAX_MONSTERS = ( LEVEL == 0 ) ? 3 : MAX_MONSTERS * 2;
             ++LEVEL;
             MONSTERS = 0;
             dotGenerator.monstersKilled();
@@ -257,7 +262,7 @@ public class TouchMe extends Activity
 
         private void addDot( Dots dots, float x, float y, float p, float s )
         {
-            if ( dots.intersects( new Dot( x, y, Color.CYAN, ( int ) ( ( p + 0.5 ) * ( s + 0.5 ) * DOT_RADIUS ), 0, 0 ) ) )
+            if ( dots.intersectsVulnerableMonster( new Dot( x, y, Color.CYAN, ( int ) ( ( p + 0.5 ) * ( s + 0.5 ) * DOT_RADIUS ), 0, 0 ) ) )
             {
                 dotView.invalidate();
             }
@@ -306,7 +311,7 @@ public class TouchMe extends Activity
                     hdlr.post( makeDots );
                     try
                     {
-                        Thread.sleep( 400 );
+                        Thread.sleep( 300 );
                     }
                     catch ( InterruptedException e )
                     {
@@ -318,7 +323,7 @@ public class TouchMe extends Activity
                     hdlr.post( moveToNeighbors );
                     try
                     {
-                        Thread.sleep( 1000 );
+                        Thread.sleep( 700 );
                     }
                     catch ( InterruptedException e )
                     {

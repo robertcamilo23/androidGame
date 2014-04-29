@@ -61,6 +61,7 @@ public class Dots
             this.height = height;
             dotMatrix = new Dot[ this.getWidth() ][ this.getHeight() ];
         }
+        intersectsMonster( dot );
         dotMatrix[ randomX ][ randomY ] = dot;
         dots.add( dot );
         notifyListener();
@@ -77,24 +78,25 @@ public class Dots
                     if ( null != dotMatrix[ i ][ j ] )
                     {
                         int randomMovement = rand.nextInt( 8 );
+                        int color = ( rand.nextBoolean() ) ? Color.GREEN : Color.YELLOW;
                         switch ( randomMovement )
                         {
                             case 0:
-                                right( i, j );
+                                right( i, j, color );
                             case 1:
-                                upLeft( i, j );
+                                upLeft( i, j, color );
                             case 2:
-                                up( i, j );
+                                up( i, j, color );
                             case 3:
-                                upRight( i, j );
+                                upRight( i, j, color );
                             case 4:
-                                downLeft( i, j );
+                                downLeft( i, j, color );
                             case 5:
-                                down( i, j );
+                                down( i, j, color );
                             case 6:
-                                downRight( i, j );
+                                downRight( i, j, color );
                             case 7:
-                                left( i, j );
+                                left( i, j, color );
                         }
                         notifyListener();
                     }
@@ -103,14 +105,14 @@ public class Dots
         }
     }
 
-    private void upLeft( int i, int j )
+    private void upLeft( int i, int j, int color )
     {
         if ( i - 1 > 0 && j - 1 > 0 )
         {
             if ( null == dotMatrix[ i - 1 ][ j - 1 ] && null != dotMatrix[ i ][ j ] )
             {
                 Dot dot = dotMatrix[ i ][ j ];
-                Dot newDot = new Dot( dot.getX() - DOT_DIAMETER, dot.getY() - DOT_DIAMETER, Color.YELLOW, DOT_RADIUS, dot.getxM() - 1, dot.getyM() - 1 );
+                Dot newDot = new Dot( dot.getX() - DOT_DIAMETER, dot.getY() - DOT_DIAMETER, color, DOT_RADIUS, dot.getxM() - 1, dot.getyM() - 1 );
                 dotMatrix[ i - 1 ][ j - 1 ] = newDot;
                 if ( dots.remove( dot ) )
                 {
@@ -121,14 +123,14 @@ public class Dots
         }
     }
 
-    private void up( int i, int j )
+    private void up( int i, int j, int color )
     {
         if ( j - 1 > 0 )
         {
             if ( null == dotMatrix[ i ][ j - 1 ] && null != dotMatrix[ i ][ j ] )
             {
                 Dot dot = dotMatrix[ i ][ j ];
-                Dot newDot = new Dot( dot.getX(), dot.getY() - DOT_DIAMETER, Color.YELLOW, DOT_RADIUS, dot.getxM(), dot.getyM() - 1 );
+                Dot newDot = new Dot( dot.getX(), dot.getY() - DOT_DIAMETER, color, DOT_RADIUS, dot.getxM(), dot.getyM() - 1 );
                 dotMatrix[ i ][ j - 1 ] = newDot;
                 if ( dots.remove( dot ) )
                 {
@@ -139,14 +141,14 @@ public class Dots
         }
     }
 
-    private void upRight( int i, int j )
+    private void upRight( int i, int j, int color )
     {
         if ( i + 1 < getWidth() && j - 1 > 0 )
         {
             if ( null == dotMatrix[ i + 1 ][ j - 1 ] && null != dotMatrix[ i ][ j ] )
             {
                 Dot dot = dotMatrix[ i ][ j ];
-                Dot newDot = new Dot( dot.getX() + DOT_DIAMETER, dot.getY() - DOT_DIAMETER, Color.YELLOW, DOT_RADIUS, dot.getxM() + 1, dot.getyM() - 1 );
+                Dot newDot = new Dot( dot.getX() + DOT_DIAMETER, dot.getY() - DOT_DIAMETER, color, DOT_RADIUS, dot.getxM() + 1, dot.getyM() - 1 );
                 dotMatrix[ i + 1 ][ j - 1 ] = newDot;
                 if ( dots.remove( dot ) )
                 {
@@ -157,14 +159,14 @@ public class Dots
         }
     }
 
-    private void downLeft( int i, int j )
+    private void downLeft( int i, int j, int color )
     {
         if ( i - 1 > 0 && j + 1 < getHeight() )
         {
             if ( null == dotMatrix[ i - 1 ][ j + 1 ] && null != dotMatrix[ i ][ j ] )
             {
                 Dot dot = dotMatrix[ i ][ j ];
-                Dot newDot = new Dot( dot.getX() - DOT_DIAMETER, dot.getY() + DOT_DIAMETER, Color.YELLOW, DOT_RADIUS, dot.getxM() - 1, dot.getyM() + 1 );
+                Dot newDot = new Dot( dot.getX() - DOT_DIAMETER, dot.getY() + DOT_DIAMETER, color, DOT_RADIUS, dot.getxM() - 1, dot.getyM() + 1 );
                 dotMatrix[ i - 1 ][ j + 1 ] = newDot;
                 if ( dots.remove( dot ) )
                 {
@@ -175,14 +177,14 @@ public class Dots
         }
     }
 
-    private void down( int i, int j )
+    private void down( int i, int j, int color )
     {
         if ( j + 1 < getHeight() )
         {
             if ( null == dotMatrix[ i ][ j + 1 ] && null != dotMatrix[ i ][ j ] )
             {
                 Dot dot = dotMatrix[ i ][ j ];
-                Dot newDot = new Dot( dot.getX(), dot.getY() + DOT_DIAMETER, Color.YELLOW, DOT_RADIUS, dot.getxM(), dot.getyM() + 1 );
+                Dot newDot = new Dot( dot.getX(), dot.getY() + DOT_DIAMETER, color, DOT_RADIUS, dot.getxM(), dot.getyM() + 1 );
                 dotMatrix[ i ][ j + 1 ] = newDot;
                 if ( dots.remove( dot ) )
                 {
@@ -193,14 +195,14 @@ public class Dots
         }
     }
 
-    private void downRight( int i, int j )
+    private void downRight( int i, int j, int color )
     {
         if ( i + 1 < getWidth() && j + 1 < getHeight() )
         {
             if ( null == dotMatrix[ i + 1 ][ j + 1 ] && null != dotMatrix[ i ][ j ] )
             {
                 Dot dot = dotMatrix[ i ][ j ];
-                Dot newDot = new Dot( dot.getX() + DOT_DIAMETER, dot.getY() + DOT_DIAMETER, Color.YELLOW, DOT_RADIUS, dot.getxM() + 1, dot.getyM() + 1 );
+                Dot newDot = new Dot( dot.getX() + DOT_DIAMETER, dot.getY() + DOT_DIAMETER, color, DOT_RADIUS, dot.getxM() + 1, dot.getyM() + 1 );
                 dotMatrix[ i + 1 ][ j + 1 ] = newDot;
                 if ( dots.remove( dot ) )
                 {
@@ -211,14 +213,14 @@ public class Dots
         }
     }
 
-    private void left( int i, int j )
+    private void left( int i, int j, int color )
     {
         if ( i - 1 > 0 )
         {
             if ( null == dotMatrix[ i - 1 ][ j ] && null != dotMatrix[ i ][ j ] )
             {
                 Dot dot = dotMatrix[ i ][ j ];
-                Dot newDot = new Dot( dot.getX() - DOT_DIAMETER, dot.getY(), Color.YELLOW, DOT_RADIUS, dot.getxM() - 1, dot.getyM() );
+                Dot newDot = new Dot( dot.getX() - DOT_DIAMETER, dot.getY(), color, DOT_RADIUS, dot.getxM() - 1, dot.getyM() );
                 dotMatrix[ i - 1 ][ j ] = newDot;
                 if ( dots.remove( dot ) )
                 {
@@ -229,14 +231,14 @@ public class Dots
         }
     }
 
-    private void right( int i, int j )
+    private void right( int i, int j, int color )
     {
         if ( i + 1 < getWidth() )
         {
             if ( null == dotMatrix[ i + 1 ][ j ] && null != dotMatrix[ i ][ j ] )
             {
                 Dot dot = dotMatrix[ i ][ j ];
-                Dot newDot = new Dot( dot.getX() + DOT_DIAMETER, dot.getY(), Color.YELLOW, DOT_RADIUS, dot.getxM() + 1, dot.getyM() );
+                Dot newDot = new Dot( dot.getX() + DOT_DIAMETER, dot.getY(), color, DOT_RADIUS, dot.getxM() + 1, dot.getyM() );
                 dotMatrix[ i + 1 ][ j ] = newDot;
                 if ( dots.remove( dot ) )
                 {
@@ -252,6 +254,13 @@ public class Dots
      */
     public void clearDots()
     {
+        for ( int i = 0 ; i < width ; i++ )
+        {
+            for ( int j = 0 ; j < height ; j++ )
+            {
+                dotMatrix[ i ][ j ] = null;
+            }
+        }
         dots.clear();
         notifyListener();
     }
@@ -264,7 +273,22 @@ public class Dots
         }
     }
 
-    public boolean intersects( Dot userTouch )
+    public boolean intersectsMonster( Dot userTouch )
+    {
+        for ( Dot dot : dots )
+        {
+            if ( dot.getX() - ( dot.getRadius() ) <= userTouch.getX() && userTouch.getX() <= dot.getX() + ( dot.getRadius() ) &&
+                 dot.getY() - ( dot.getRadius() ) <= userTouch.getY() && userTouch.getY() <= dot.getY() + ( dot.getRadius() ) )
+            {
+                dotMatrix[ dot.getxM() ][ dot.getyM() ] = null;
+                dots.remove( dot );
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean intersectsVulnerableMonster( Dot userTouch )
     {
         for ( Dot dot : dots )
         {
@@ -272,6 +296,7 @@ public class Dots
                  dot.getY() - ( dot.getRadius() ) <= userTouch.getY() && userTouch.getY() <= dot.getY() + ( dot.getRadius() ) &&
                  dot.getColor() == Color.YELLOW )
             {
+                dotMatrix[ dot.getxM() ][ dot.getyM() ] = null;
                 dots.remove( dot );
                 return true;
             }
