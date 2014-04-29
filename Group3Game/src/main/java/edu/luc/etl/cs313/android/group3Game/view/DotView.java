@@ -1,6 +1,8 @@
 package edu.luc.etl.cs313.android.group3Game.view;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -8,6 +10,8 @@ import android.graphics.Paint.Style;
 import android.util.AttributeSet;
 import android.view.View;
 
+
+import edu.luc.etl.cs313.android.group3Game.R;
 import edu.luc.etl.cs313.android.group3Game.model.Dot;
 import edu.luc.etl.cs313.android.group3Game.model.Dots;
 
@@ -23,6 +27,8 @@ public class DotView extends View
 {
 
     private volatile Dots dots;
+    Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
+
 
     /**
      * @param context the rest of the application
@@ -88,7 +94,8 @@ public class DotView extends View
         for ( Dot dot : dots.getDots() )
         {
             paint.setColor( dot.getColor() );
-            canvas.drawCircle( dot.getX(), dot.getY(), dot.getRadius(), paint );
+            //canvas.drawCircle( dot.getX(), dot.getY(), dot.getRadius(), paint );
+            canvas.drawBitmap(bm, dot.getX(), dot.getY(), paint);
         }
     }
 }
