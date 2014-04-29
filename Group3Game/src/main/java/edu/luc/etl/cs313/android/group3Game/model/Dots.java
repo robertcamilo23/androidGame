@@ -2,12 +2,13 @@ package edu.luc.etl.cs313.android.group3Game.model;
 
 
 import android.graphics.Color;
-import android.util.Log;
 
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+
+import static edu.luc.etl.cs313.android.group3Game.model.Constants.*;
 
 
 /**
@@ -16,12 +17,11 @@ import java.util.Random;
 public class Dots
 {
 
-    public static final int DOT_RADIUS = 44;
-    public static final int DOT_DIAMETER = DOT_RADIUS * 2;
     private final LinkedList<Dot> dots = new LinkedList<Dot>();
     private final List<Dot> safeDots = Collections.unmodifiableList( dots );
     private Dot[][] dotMatrix;
-    private int width, height;
+    private int width;
+    private int height;
     private final Random rand = new Random();
     private DotsChangeListener dotsChangeListener;
 
@@ -59,7 +59,7 @@ public class Dots
         {
             this.width = width;
             this.height = height;
-            dotMatrix = new Dot[ this.width ][ this.height ];
+            dotMatrix = new Dot[ this.getWidth() ][ this.getHeight() ];
         }
         dotMatrix[ randomX ][ randomY ] = dot;
         dots.add( dot );
@@ -70,9 +70,9 @@ public class Dots
     {
         if ( !dots.isEmpty() )
         {
-            for ( int i = 0 ; i < width ; i++ )
+            for ( int i = 0 ; i < getWidth() ; i++ )
             {
-                for ( int j = 0 ; j < height ; j++ )
+                for ( int j = 0 ; j < getHeight() ; j++ )
                 {
                     if ( null != dotMatrix[ i ][ j ] )
                     {
@@ -141,7 +141,7 @@ public class Dots
 
     private void upRight( int i, int j )
     {
-        if ( i + 1 < width && j - 1 > 0 )
+        if ( i + 1 < getWidth() && j - 1 > 0 )
         {
             if ( null == dotMatrix[ i + 1 ][ j - 1 ] && null != dotMatrix[ i ][ j ] )
             {
@@ -159,7 +159,7 @@ public class Dots
 
     private void downLeft( int i, int j )
     {
-        if ( i - 1 > 0 && j + 1 < height )
+        if ( i - 1 > 0 && j + 1 < getHeight() )
         {
             if ( null == dotMatrix[ i - 1 ][ j + 1 ] && null != dotMatrix[ i ][ j ] )
             {
@@ -177,7 +177,7 @@ public class Dots
 
     private void down( int i, int j )
     {
-        if ( j + 1 < height )
+        if ( j + 1 < getHeight() )
         {
             if ( null == dotMatrix[ i ][ j + 1 ] && null != dotMatrix[ i ][ j ] )
             {
@@ -195,7 +195,7 @@ public class Dots
 
     private void downRight( int i, int j )
     {
-        if ( i + 1 < width && j + 1 < height )
+        if ( i + 1 < getWidth() && j + 1 < getHeight() )
         {
             if ( null == dotMatrix[ i + 1 ][ j + 1 ] && null != dotMatrix[ i ][ j ] )
             {
@@ -231,7 +231,7 @@ public class Dots
 
     private void right( int i, int j )
     {
-        if ( i + 1 < width )
+        if ( i + 1 < getWidth() )
         {
             if ( null == dotMatrix[ i + 1 ][ j ] && null != dotMatrix[ i ][ j ] )
             {
@@ -277,6 +277,16 @@ public class Dots
             }
         }
         return false;
+    }
+
+    public int getWidth()
+    {
+        return width;
+    }
+
+    public int getHeight()
+    {
+        return height;
     }
 
     /**

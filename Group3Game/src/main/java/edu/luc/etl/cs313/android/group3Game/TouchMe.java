@@ -12,12 +12,13 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
-import android.widget.Button;
 import android.widget.EditText;
 
 import edu.luc.etl.cs313.android.group3Game.model.Dot;
 import edu.luc.etl.cs313.android.group3Game.model.Dots;
 import edu.luc.etl.cs313.android.group3Game.view.DotView;
+
+import static edu.luc.etl.cs313.android.group3Game.model.Constants.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +34,6 @@ public class TouchMe extends Activity
      * Dot diameter
      * http://mobiforge.com/design-development/designing-touch-thumb-and-finger-sized-design
      */
-    public static final int DOT_RADIUS = 44;
-    public static final int DOT_DIAMETER = DOT_RADIUS * 2;
 
     public static int MAX_MONSTERS = 3;
     public static int MONSTERS = 0;

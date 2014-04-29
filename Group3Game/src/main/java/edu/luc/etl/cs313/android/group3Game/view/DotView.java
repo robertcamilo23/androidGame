@@ -11,6 +11,8 @@ import android.view.View;
 import edu.luc.etl.cs313.android.group3Game.model.Dot;
 import edu.luc.etl.cs313.android.group3Game.model.Dots;
 
+import static edu.luc.etl.cs313.android.group3Game.model.Constants.*;
+
 
 /**
  * I see spots!
@@ -66,12 +68,20 @@ public class DotView extends View
     {
         Paint paint = new Paint();
         paint.setStyle( Style.STROKE );
-        paint.setColor( hasFocus() ? Color.BLUE : Color.GRAY );
+        paint.setColor( Color.RED );
         canvas.drawRect( 0, 0, getWidth() - 1, getHeight() - 1, paint );
 
         if ( null == dots )
         {
             return;
+        }
+
+        for ( int i = 0 ; i < dots.getWidth() ; i++ )
+        {
+            for ( int j = 0 ; j < dots.getHeight() ; j++ )
+            {
+                canvas.drawRect( i * DOT_DIAMETER, j * DOT_DIAMETER, ( i * DOT_DIAMETER ) + DOT_DIAMETER, ( j * DOT_DIAMETER ) + DOT_DIAMETER, paint );
+            }
         }
 
         paint.setStyle( Style.FILL );
