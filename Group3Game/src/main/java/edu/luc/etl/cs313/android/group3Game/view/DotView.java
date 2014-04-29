@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.util.AttributeSet;
@@ -95,7 +97,16 @@ public class DotView extends View
         {
             paint.setColor( dot.getColor() );
             //canvas.drawCircle( dot.getX(), dot.getY(), dot.getRadius(), paint );
-            canvas.drawBitmap(bm, dot.getX(), dot.getY(), paint);
+            if (paint.getColor() == Color.YELLOW)
+            {
+                Paint p = new Paint(Color.YELLOW);
+                ColorFilter cf = new LightingColorFilter(Color.YELLOW, 1);
+                p.setColorFilter(cf);
+                canvas.drawBitmap(bm, dot.getX(), dot.getY(), p);
+            }
+            else
+                canvas.drawBitmap(bm, dot.getX(), dot.getY(), paint);
+
         }
     }
 }
