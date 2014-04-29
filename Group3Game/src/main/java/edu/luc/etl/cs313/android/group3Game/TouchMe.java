@@ -34,9 +34,10 @@ public class TouchMe extends Activity
      * http://mobiforge.com/design-development/designing-touch-thumb-and-finger-sized-design
      */
 
-    public static int MAX_MONSTERS = 3;
+    public static int MAX_MONSTERS = 2;
     public static int MONSTERS = 0;
     public static int LEVEL = 1;
+    public static int GENERATION_TIME = 1000;
 
     /**
      * The application model
@@ -188,12 +189,20 @@ public class TouchMe extends Activity
         }
     }
 
-    void moveToNeighbors( Dots dots )
+    void moveToNeighbors( Dots dots, DotView view )
     {
         dots.moveToNeighbors();
         if ( dots.getDots().size() == 0 )
         {
             MAX_MONSTERS = ( LEVEL == 0 ) ? 3 : MAX_MONSTERS * 2;
+            if ( MAX_MONSTERS >= ( ( view.getWidth() / ( DOT_DIAMETER ) ) * ( view.getHeight() / ( DOT_DIAMETER ) ) ) / 2 )
+            {
+                MAX_MONSTERS = MAX_MONSTERS / 2;
+            }
+            else
+            {
+                GENERATION_TIME = ( GENERATION_TIME - 50 > 0 ) ? GENERATION_TIME - 100 : GENERATION_TIME;
+            }
             ++LEVEL;
             MONSTERS = 0;
             dotGenerator.monstersKilled();
@@ -286,7 +295,7 @@ public class TouchMe extends Activity
         private final Runnable moveToNeighbors = new Runnable()
         {
             @Override
-            public void run() { moveToNeighbors( dots ); }
+            public void run() { moveToNeighbors( dots, view ); }
         };
 
         private volatile boolean done;
@@ -311,7 +320,7 @@ public class TouchMe extends Activity
                     hdlr.post( makeDots );
                     try
                     {
-                        Thread.sleep( 300 );
+                        Thread.sleep( 150 );
                     }
                     catch ( InterruptedException e )
                     {
@@ -323,7 +332,7 @@ public class TouchMe extends Activity
                     hdlr.post( moveToNeighbors );
                     try
                     {
-                        Thread.sleep( 700 );
+                        Thread.sleep( GENERATION_TIME );
                     }
                     catch ( InterruptedException e )
                     {
