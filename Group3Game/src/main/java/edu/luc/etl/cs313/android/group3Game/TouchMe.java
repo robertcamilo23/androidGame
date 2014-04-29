@@ -94,26 +94,6 @@ public class TouchMe extends Activity
             }
         } );
 
-        // wire up the controller
-        //        ( ( Button ) findViewById( R.id.button1 ) ).setOnClickListener( new Button.OnClickListener()
-        //                                                                        {
-        //                                                                            @Override
-        //                                                                            public void onClick( View v )
-        //                                                                            {
-        //                                                                                makeDot( dotModel, dotView );
-        //                                                                            }
-        //                                                                        }
-        //                                                                      );
-        //        ( ( Button ) findViewById( R.id.button2 ) ).setOnClickListener( new Button.OnClickListener()
-        //                                                                        {
-        //                                                                            @Override
-        //                                                                            public void onClick( View v )
-        //                                                                            {
-        //                                                                                makeDot( dotModel, dotView );
-        //                                                                            }
-        //                                                                        }
-        //                                                                      );
-
         final EditText tb1 = ( EditText ) findViewById( R.id.text1 );
         final EditText tb2 = ( EditText ) findViewById( R.id.text2 );
         dotModel.setDotsChangeListener( new Dots.DotsChangeListener()
@@ -346,7 +326,6 @@ public class TouchMe extends Activity
                 }
             }
 
-            Log.d( "thread should die here", "" );
             return;
         }
     }
