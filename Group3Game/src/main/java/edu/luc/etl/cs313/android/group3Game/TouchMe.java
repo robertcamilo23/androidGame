@@ -109,7 +109,6 @@ public class TouchMe extends Activity
                 dotView.invalidate();
             }
         } );
-
     }
 
     /**
@@ -207,6 +206,9 @@ public class TouchMe extends Activity
             MONSTERS = 0;
             dotGenerator.monstersKilled();
         }
+
+
+
     }
 
     /**
@@ -281,7 +283,7 @@ public class TouchMe extends Activity
     /**
      * Generate new dots, one per second.
      */
-    private final class DotGenerator implements Runnable
+    public final class DotGenerator implements Runnable
     {
         final Dots dots;
         final DotView view;
@@ -343,4 +345,5 @@ public class TouchMe extends Activity
             return;
         }
     }
+
 }

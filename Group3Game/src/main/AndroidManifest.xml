@@ -7,10 +7,15 @@
     <uses-sdk
         android:minSdkVersion="13"
         android:targetSdkVersion="14"/>
+    <instrumentation
+        android:name="android.test.InstrumentationTestRunner"
+        android:targetPackage="edu.luc.etl.cs313.android.group3Game" />
+
 
     <application
         android:icon="@drawable/icon"
         android:label="@string/app_name">
+
         <activity
             android:name=".TouchMe"
             android:screenOrientation="landscape"
@@ -19,6 +24,7 @@
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
+
             </intent-filter>
         </activity>
     </application>
