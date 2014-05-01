@@ -131,9 +131,10 @@ public class TouchMe extends Activity
         {
             case R.id.menu_clear:
                 dotModel.clearDots();
-                MAX_MONSTERS = 3;
+                MAX_MONSTERS = 2;
                 MONSTERS = 0;
                 LEVEL = 0;
+                GENERATION_TIME = 1000;
                 return true;
 
             default:
@@ -160,9 +161,10 @@ public class TouchMe extends Activity
         {
             case 1:
                 dotModel.clearDots();
-                MAX_MONSTERS = 3;
+                MAX_MONSTERS = 2;
                 MONSTERS = 0;
                 LEVEL = 0;
+                GENERATION_TIME = 1000;
                 return true;
             default:
                 ;
@@ -193,20 +195,16 @@ public class TouchMe extends Activity
         dots.moveToNeighbors();
         if ( dots.getDots().size() == 0 )
         {
-            MAX_MONSTERS = ( LEVEL == 0 ) ? 3 : MAX_MONSTERS * 2;
+            GENERATION_TIME = ( GENERATION_TIME - 100 > 0 ) ? GENERATION_TIME - 100 : GENERATION_TIME;
+            MAX_MONSTERS = ( LEVEL == 0 ) ? 2 : MAX_MONSTERS * 2;
             if ( MAX_MONSTERS >= ( ( view.getWidth() / ( DOT_DIAMETER ) ) * ( view.getHeight() / ( DOT_DIAMETER ) ) ) / 2 )
             {
                 MAX_MONSTERS = MAX_MONSTERS / 2;
-            }
-            else
-            {
-                GENERATION_TIME = ( GENERATION_TIME - 50 > 0 ) ? GENERATION_TIME - 100 : GENERATION_TIME;
             }
             ++LEVEL;
             MONSTERS = 0;
             dotGenerator.monstersKilled();
         }
-
 
 
     }
@@ -322,7 +320,7 @@ public class TouchMe extends Activity
                     hdlr.post( makeDots );
                     try
                     {
-                        Thread.sleep( 150 );
+                        Thread.sleep( 250 );
                     }
                     catch ( InterruptedException e )
                     {
@@ -345,5 +343,4 @@ public class TouchMe extends Activity
             return;
         }
     }
-
 }
