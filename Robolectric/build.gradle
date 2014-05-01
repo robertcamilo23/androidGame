@@ -1,6 +1,5 @@
 apply plugin: 'java'
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile files('C:/Users/Robert Klein/AndroidStudioProjects/cs313sp14group3p5/robolectric-2.3-with-dependencies.jar')
+    
 }

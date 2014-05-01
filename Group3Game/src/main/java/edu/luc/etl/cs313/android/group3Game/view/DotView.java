@@ -29,7 +29,8 @@ public class DotView extends View
 {
 
     private volatile Dots dots;
-    Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
+    Bitmap greenMonster = BitmapFactory.decodeResource( getResources(), R.drawable.hulk );
+    Bitmap yellowMonster = BitmapFactory.decodeResource( getResources(), R.drawable.star );
 
 
     /**
@@ -95,18 +96,14 @@ public class DotView extends View
         paint.setStyle( Style.FILL );
         for ( Dot dot : dots.getDots() )
         {
-            paint.setColor( dot.getColor() );
-            //canvas.drawCircle( dot.getX(), dot.getY(), dot.getRadius(), paint );
-            if (paint.getColor() == Color.YELLOW)
+            if ( dot.getColor() == Color.YELLOW )
             {
-                Paint p = new Paint(Color.YELLOW);
-                ColorFilter cf = new LightingColorFilter(Color.YELLOW, 1);
-                p.setColorFilter(cf);
-                canvas.drawBitmap(bm, dot.getX(), dot.getY(), p);
+                canvas.drawBitmap( yellowMonster, dot.getX() - dot.getRadius(), dot.getY() - dot.getRadius(), paint );
             }
             else
-                canvas.drawBitmap(bm, dot.getX(), dot.getY(), paint);
-
+            {
+                canvas.drawBitmap( greenMonster, dot.getX() - dot.getRadius(), dot.getY() - dot.getRadius(), paint );
+            }
         }
     }
 }
