@@ -84,9 +84,9 @@ public class Dots
                             case 0:
                                 right( i, j, color );
                             case 1:
-                                upLeft( i, j, color );
+                                downRight( i, j, color );
                             case 2:
-                                up( i, j, color );
+                                left( i, j, color );
                             case 3:
                                 upRight( i, j, color );
                             case 4:
@@ -94,9 +94,9 @@ public class Dots
                             case 5:
                                 down( i, j, color );
                             case 6:
-                                downRight( i, j, color );
+                                upLeft( i, j, color );
                             case 7:
-                                left( i, j, color );
+                                up( i, j, color );
                         }
                         notifyListener();
                     }
